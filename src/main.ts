@@ -1,4 +1,5 @@
 import { Vue } from 'vue-property-decorator'
+import buildDependencyContainer from './app.container'
 import App from './App.vue'
 import store from './store'
 
@@ -9,7 +10,7 @@ class AppBootstrap {
   }
 
   private loadDependencyContainer (): void {
-    // Load Dependency Container
+    buildDependencyContainer()
   }
 
   private loadVueApp (): void {

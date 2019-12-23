@@ -8,15 +8,27 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { Inject } from 'inversify-props'
+import IKanyeWestService from '@/services/IKanyeWestService'
+import { Action, Getter } from 'vuex-class'
 
 @Component
 export default class App extends Vue {
-  private quote: string = ''
+  @Inject()
+  private kanyeWestService!: IKanyeWestService
 
-  private getQuote (): Promise<void> {
-    console.log('Click!')
+  @Getter
+  private quote!: string
 
-    return Promise.resolve()
+  @Action
+  private fetchKanyeQuote!: () => Promise<void>
+
+  protected async mounted (): Promise<void> {
+    await this.getQuote()
+  }
+
+  private async getQuote (): Promise<void> {
+    this.fetchKanyeQuote()
   }
 }
 </script>

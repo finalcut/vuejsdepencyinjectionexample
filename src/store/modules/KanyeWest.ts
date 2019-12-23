@@ -1,14 +1,25 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
+import { Inject } from 'inversify-props'
 import KanyeQuote from '@/models/KanyeQuote'
-
+import IKanyeWestService from '@/services/IKanyeWestService'
 @Module
 export default class KanyeWest extends VuexModule {
+  @Inject()
+  private kanyeWestService!: IKanyeWestService
+
   public kanyeQuote: KanyeQuote | null = null
 
   @Action
-  public async fetchKanyeQuote (): Promise<boolean> {
-    // TODO: Inject an Use Quote Service
-    return Promise.resolve(true)
+  public async fetchKanyeQuote (): Promise<void> {
+    try {
+      return await this.kanyeWestService.getQuote().then(
+        (kanyeQuote) => {
+          this.context.commit('setKanyeQuote', kanyeQuote)
+        }
+      );
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   @Mutation
